@@ -38,6 +38,16 @@ def get_weather(region):
     }
     key = "622262f0b5c3420798ccc3d0d6fc8e06"
     region_url = "https://geoapi.qweather.com/v2/city/lookup?location={}&key={}".format(region, key)
+    yburl = 'https://geoapi.qweather.com/v2/city/lookup'
+    value = {
+    'location': '广州',
+    'key': '622262f0b5c3420798ccc3d0d6fc8e06',
+    'lang': 'zh'
+    }
+    ybreq = requests.get(yburl, params=value)
+    ybjs = ybreq.json()
+    print(ybjs)
+    
     response = requests.get(region_url).json()
     #response = get(region_url, headers=headers).json()
     print(response)
