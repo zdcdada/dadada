@@ -49,7 +49,7 @@ def get_weather(region):
 #         sys.exit(1)
 #     else:
         # 获取地区的location--id
-        location_id = response["location"][0]["id"]
+    location_id = response["location"][0]["id"]
     weather_url = "https://devapi.qweather.com/v7/weather/now?location={}&key={}".format(location_id, key)
     response = get(weather_url, headers=headers).json()
     # 天气
