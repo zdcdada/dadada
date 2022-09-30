@@ -5,6 +5,7 @@ from datetime import datetime, date
 from zhdate import ZhDate
 import sys
 import os
+import requests
  
  
 def get_color():
@@ -37,8 +38,7 @@ def get_weather(region):
     }
     key = "622262f0b5c3420798ccc3d0d6fc8e06"
     region_url = "https://geoapi.qweather.com/v2/city/lookup?location={}&key={}".format(region, key)
-    print(region_url)
-    response = get(region_url, headers=headers).json()
+    response = requests(region_url, headers=headers)
     print(response)
 #     if response["code"] == "404":
 #         print("推送消息失败，请检查地区名是否有误！")
@@ -52,7 +52,8 @@ def get_weather(region):
         # 获取地区的location--id
     location_id = response["location"][0]["id"]
     weather_url = "https://devapi.qweather.com/v7/weather/now?location={}&key={}".format(location_id, key)
-    response = get(weather_url, headers=headers).json()
+    response = requests(weather_url, headers=headers)
+    #.json()
     # 天气
     weather = response["now"]["text"]
     # 当前温度
