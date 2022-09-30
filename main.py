@@ -66,7 +66,7 @@ def get_weather(region):
     weather_url = "https://free-api.heweather.com/s6/weather/forecast?location={}&key={}".format(location_id, key)
     response = requests(weather_url, headers=headers).json()
     # 天气
-    weather = response['HeWeather6'][0]["daily_forecast"][0]["cond_txt_d"]+'至'+ybjs['HeWeather6'][0]["daily_forecast"][0]["cond_txt_n"])
+    weather = response['HeWeather6'][0]["daily_forecast"][0]["cond_txt_d"]+'至'+ybjs['HeWeather6'][0]["daily_forecast"][0]["cond_txt_n"]
     # 当前温度
     temp = response['HeWeather6'][0]["daily_forecast"][0][tmp_max]+ u"\N{DEGREE SIGN}" + "C"
     # 风向
