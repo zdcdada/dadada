@@ -49,8 +49,8 @@ def get_weather(region):
     #ybjs = ybreq.json()
     #print(ybjs)
     
-    response = requests.get(region_url).json()
-    #response = get(region_url, headers=headers).json()
+    #response = requests.get(region_url).json()
+    response = get(region_url, headers=headers).json()
     print(response)
 #     if response["code"] == "404":
 #         print("推送消息失败，请检查地区名是否有误！")
@@ -64,7 +64,7 @@ def get_weather(region):
         # 获取地区的location--id
     location_id = response['HeWeather6'][0]["basic"]["cid"]
     weather_url = "https://free-api.heweather.com/s6/weather/forecast?location={}&key={}".format(location_id, key)
-    response = requests(weather_url, headers=headers).json()
+    response = get(weather_url, headers=headers).json()
     # 天气
     weather = response['HeWeather6'][0]["daily_forecast"][0]["cond_txt_d"]+'至'+ybjs['HeWeather6'][0]["daily_forecast"][0]["cond_txt_n"]
     # 当前温度
