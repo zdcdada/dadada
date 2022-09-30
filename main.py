@@ -37,7 +37,7 @@ def get_weather(region):
                       'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
     }
     key = config["weather_key"]
-    region_url = "https://api.map.baidu.com/weather/v1/?district_id=222405&data_type=all&district_id=460100&ak=KOt43gSf8Vn56xsX14VhHlAbEIrX3sAQ".format(region, key)
+    region_url = "https://api.map.baidu.com/weather/v1/?district_id=222405&data_type=all&district_id=460100&ak=KOt43gSf8Vn56xsX14VhHlAbEIrX3sAQ"
     response = get(region_url, headers=headers).json()
     if response["code"] == "404":
         print("推送消息失败，请检查地区名是否有误！")
@@ -48,9 +48,9 @@ def get_weather(region):
         os.system("pause")
         sys.exit(1)
     else:
-        # 获取地区的location--id
-        location_id = response["location"][0]["id"]
-    weather_url = "https://api.map.baidu.com/weather/v1/?district_id=222405&data_type=all&district_id=460100&ak=KOt43gSf8Vn56xsX14VhHlAbEIrX3sAQ".format(location_id, key)
+        # 获取地区的location--id----已改
+        location_id = 460100
+    weather_url = "https://api.map.baidu.com/weather/v1/?district_id=222405&data_type=all&district_id=460100&ak=KOt43gSf8Vn56xsX14VhHlAbEIrX3sAQ"
     response = get(weather_url, headers=headers).json()
     # 天气
     weather = response["now"]["text"]
