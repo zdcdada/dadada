@@ -38,11 +38,11 @@ def get_weather(region):
     }
     region_url = "https://api.map.baidu.com/weather/v1/?district_id=222405&data_type=all&district_id=460100&ak=KOt43gSf8Vn56xsX14VhHlAbEIrX3sAQ"
     response = get(region_url, headers=headers).json()
-    if response["code"] == "404":
+    if response["status"] == "404":
         print("推送消息失败，请检查地区名是否有误！")
         os.system("pause")
         sys.exit(1)
-    elif response["code"] == "401":
+    elif response["status"] == "401":
         print("推送消息失败，请检查和风天气key是否正确！")
         os.system("pause")
         sys.exit(1)
@@ -220,7 +220,7 @@ if __name__ == "__main__":
     users = config["user"]
     # 传入地区获取天气信息
     region = config["region"]
-    weather, temp, wind_dir = get_weather(region)
+    weather, temp, wind_dir = get_weather(222405)
     note_ch = config["note_ch"]
     note_en = config["note_en"]
     if note_ch == "" and note_en == "":
