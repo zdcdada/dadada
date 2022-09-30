@@ -37,7 +37,7 @@ def get_weather(region):
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.113 Safari/537.36'
     }
     key = "622262f0b5c3420798ccc3d0d6fc8e06"
-    region_url = "https://geoapi.qweather.com/v2/city/lookup?location={}&key={}".format(region, key)
+    region_url = "https://free-api.heweather.com/s6/weather/forecast?location={}&key={}".format(region, key)
     yburl = 'https://free-api.heweather.com/s6/weather/forecast'
     value = {
     'location': '广州',
