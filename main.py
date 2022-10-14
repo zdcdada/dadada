@@ -36,44 +36,28 @@ def get_weather(region):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.113 Safari/537.36'
     }
-    key = "622262f0b5c3420798ccc3d0d6fc8e06"
+    key = config["weather_key"]
     region_url = "https://free-api.heweather.com/s6/weather/forecast?location={}&key={}".format(region, key)
-    
-    #yburl = 'https://free-api.heweather.com/s6/weather/forecast'
-    #value = {
-    #'location': '广州',
-    #'key': '622262f0b5c3420798ccc3d0d6fc8e06',
-    #'lang': 'zh'
-    #}
-    #ybreq = requests.get(yburl,params=value)
-    #ybjs = ybreq.json()
-    #print(ybjs)
-    
-    #response = requests.get(region_url).json()
     response = get(region_url, headers=headers).json()
     print(response)
-#     if response["code"] == "404":
-#         print("推送消息失败，请检查地区名是否有误！")
-#         os.system("pause")
-#         sys.exit(1)
-#     elif response["code"] == "401":
-#         print("推送消息失败，请检查和风天气key是否正确！")
-#         os.system("pause")
-#         sys.exit(1)
-#     else:
-        # 获取地区的location--id
+
+    # 获取地区的location--id
     location_id = response['HeWeather6'][0]["basic"]["cid"]
     weather_url = "https://free-api.heweather.com/s6/weather/forecast?location={}&key={}".format(location_id, key)
     response = get(weather_url, headers=headers).json()
-    # 天气
-    weather = response['HeWeather6'][0]["daily_forecast"][0]["cond_txt_d"]+'至'+response['HeWeather6'][0]["daily_forecast"][0]["cond_txt_n"]
+    # 天气帅达版
+    weather = '白天'+response['HeWeather6'][0]["daily_forecast"][0]["cond_txt_d"]+'，'+'傍晚'+response['HeWeather6'][0]["daily_forecast"][0]["cond_txt_n"]
     # 当前温度
-    temp = response['HeWeather6'][0]["daily_forecast"][0]["tmp_max"]+ u"\N{DEGREE SIGN}" + "C"
+    temp = response['HeWeather6'][0]["daily_forecast"][0]["tmp_min"]+ u"\N{DEGREE SIGN}" + "C"+'—'+response['HeWeather6'][0]["daily_forecast"][0]["tmp_max"]+ u"\N{DEGREE SIGN}" + "C"
+    if int(response['HeWeather6'][0]["daily_forecast"][0]["tmp_min"]) <= 25:
+        xigua = "天气变凉啦，多穿点衣服哦~"
+    else:
+        xigua = "今天又是很想你的一天~"
     # 风向
     wind_dir = response['HeWeather6'][0]["daily_forecast"][0]["wind_dir"]
-    return weather, temp, wind_dir
+    return weather, temp, wind_dir, xigua
  
- 
+#--------关注微信公众号：繁星资源，更多资源等你拿----------
 def get_birthday(birthday, year, today):
     birthday_year = birthday.split("-")[0]
     # 判断是否为农历生日
@@ -128,7 +112,7 @@ def get_ciba():
     return note_ch, note_en
  
  
-def send_message(to_user, access_token, region_name, weather, temp, wind_dir, note_ch, note_en):
+def send_message(to_user, access_token, region_name, weather, temp, xigua, wind_dir, note_ch, note_en):
     url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={}".format(access_token)
     week_list = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"]
     year = localtime().tm_year
@@ -185,6 +169,10 @@ def send_message(to_user, access_token, region_name, weather, temp, wind_dir, no
             "note_ch": {
                 "value": note_ch,
                 "color": get_color()
+            },
+            "xigua":{
+                "value": xigua,
+                "color": get_color()
             }
         }
     }
@@ -234,7 +222,7 @@ if __name__ == "__main__":
     users = config["user"]
     # 传入地区获取天气信息
     region = config["region"]
-    weather, temp, wind_dir = get_weather(region)
+    weather, temp, wind_dir,xigua = get_weather(region)
     note_ch = config["note_ch"]
     note_en = config["note_en"]
     if note_ch == "" and note_en == "":
@@ -242,5 +230,5 @@ if __name__ == "__main__":
         note_ch, note_en = get_ciba()
     # 公众号推送消息
     for user in users:
-        send_message(user, accessToken, region, weather, temp, wind_dir, note_ch, note_en)
+        send_message(user, accessToken, region, weather, temp, xigua, wind_dir, note_ch, note_en)
     os.system("pause")
